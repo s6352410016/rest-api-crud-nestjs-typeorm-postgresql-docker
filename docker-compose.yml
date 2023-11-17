@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  nest-app:
+    container_name: nest-app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080  
+    depends_on:
+      - db
+    environment:
+      - DB_TYPE=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=5087
+      - DB_NAME=customer_db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+  db:
+    container_name: db
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=5087
+      - POSTGRES_DB=customer_db
+    ports:
+      - 5432:5432  
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
